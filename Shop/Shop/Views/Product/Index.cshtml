@@ -4,4 +4,36 @@
     ViewBag.Title = "List products";
 }
 
-
+@if (Model != null && Model.Count != 0)
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>DateCreation</th>
+            <th>DateUpdate</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.DateCreation</td>
+                <td>@p.DateUpdate</td>
+                <td>@p.Category.Name</td>
+                <td>@p.Brand.Name</td>
+                <td>@p.Price</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">Unfortunately, there are currently no phones for sale :c</h4>
+}

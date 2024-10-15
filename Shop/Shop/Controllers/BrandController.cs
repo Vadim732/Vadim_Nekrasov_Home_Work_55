@@ -17,4 +17,41 @@ public class BrandController : Controller
         List<Brand> brands = _context.Brands.ToList();
         return View(brands);
     }
+    
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
+    [HttpPost]
+    public IActionResult Create(Brand brand)
+    {
+        if (brand != null)
+        {
+            bool brandName = _context.Brands.Any(b => b.Name.ToLower() == brand.Name.ToLower());
+            if (brandName)
+            {
+                ModelState.AddModelError("Name", "Error: A brand with this name already exists!");
+                return View(brand);
+            }
+            
+            _context.Add(brand);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        
+        return View(brand);
+    }
+
+    public IActionResult Delete(int brandId)
+    {
+        Brand brand = _context.Brands.FirstOrDefault(b => b.Id == brandId);
+        if (brand != null)
+        {
+            _context.Remove(brand);
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("Index");
+    }
 }

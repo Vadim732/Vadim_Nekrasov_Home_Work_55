@@ -17,4 +17,6 @@ public class ProductController : Controller
         List<Product> products = _context.Products.ToList();
         return View(products);
     }
+    
+
 }
