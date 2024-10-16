@@ -73,4 +73,16 @@ public class ProductController : Controller
                 
         return RedirectToAction("Index");
     }
+
+    public IActionResult Delete(int productId)
+    {
+        Product product = _context.Products.FirstOrDefault(p => p.Id == productId);
+        if (product != null)
+        {
+            _context.Remove(product);
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("Index");
+    }
 }

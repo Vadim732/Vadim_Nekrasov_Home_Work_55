@@ -3,3 +3,38 @@
 @{
     ViewBag.Title = "List orders";
 }
+
+@if (Model != null && Model.Count != 0)
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Address</th>
+            <th>Contact phone number</th>
+            <th>Ordered phone</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.Name</td>
+                <td>@o.Surname</td>
+                <td>@o.Address</td>
+                <td>@o.ContactPhone</td>
+                <td><a asp-action="Details" asp-controller="Product" asp-route-productId="@o.Product.Id" class="text-dark">@o.Product.Name</a></td>
+                <td>
+                    <a asp-action="Delete" asp-controller="Order" asp-route-orderId="@o.Id" class="btn btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4 class="text-center">Unfortunately, there are currently no orders for products :c</h4>
+}

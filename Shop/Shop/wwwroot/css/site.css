@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card-size {
+  max-width: 18rem;
+  max-height: 28rem;
+}

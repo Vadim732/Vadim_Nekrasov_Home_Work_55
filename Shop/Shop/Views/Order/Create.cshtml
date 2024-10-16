@@ -1,0 +1,40 @@
+﻿@model Order
+
+@{
+    ViewBag.Title = "Place an order";
+}
+
+<div class="row">
+    <div class="bg-dark text-center pt-5 pb-4">
+        <h3 class="text-white mb-5">Fill out the form to place an order for the <span class="text-success">@Model.Product.Name</span></h3>
+        <form asp-action="Create" asp-controller="Order" method="post">
+            <div class="form_row mb-3">
+                <label for="" class="col-4">
+                    <input type="text" class="form-control" asp-for="Name" placeholder="Enter your name...">
+                </label>
+            </div>
+            <div class="form_row mb-3">
+                <label for="" class="col-4">
+                    <input type="text" class="form-control" asp-for="Surname" placeholder="Enter your surname....">
+                </label>
+            </div>
+            <div class="form_row mb-3">
+                <label for="" class="col-4">
+                    <textarea asp-for="Address" type="text" class="form-control" placeholder="Provide delivery address..." rows="3"></textarea>
+                </label>
+            </div>
+            <div class="form_row mb-3">
+                <label for="" class="col-4">
+                    <input type="text" class="form-control" asp-for="ContactPhone" placeholder="Specify your phone number...">
+                </label>
+            </div>
+            <div class="form_row mb-3">
+                <label for="" class="col-4">
+                    <input disabled type="text" class="form-control" value="@Model.Product.Name">
+                </label>
+                <input asp-for="ProductId" type="hidden" value="@Model.Product.Id" />
+            </div>
+            <button type="submit" class="btn btn-outline-success mb-3 w-25">Place an order</button>
+        </form>
+    </div>
+</div>
