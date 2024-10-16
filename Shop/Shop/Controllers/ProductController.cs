@@ -53,6 +53,8 @@ public class ProductController : Controller
     public IActionResult Edit(int productId)
     {
         Product product = _context.Products.Include(p => p.Brand).Include(p => p.Category).FirstOrDefault(p => p.Id == productId);
+        ViewBag.Brands = new SelectList(_context.Brands.ToList(), "Id", "Name");
+        ViewBag.Categories = new SelectList(_context.Categories.ToList(), "Id", "Name");
         if (product != null)
         {
             return View(product);
@@ -66,7 +68,7 @@ public class ProductController : Controller
     {
         product.DateUpdate = DateTime.Now;
         
-        _context.Products.Add(product);
+        _context.Products.Update(product);
         _context.SaveChanges();
                 
         return RedirectToAction("Index");
