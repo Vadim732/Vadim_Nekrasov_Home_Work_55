@@ -25,3 +25,13 @@ body {
   max-width: 18rem;
   max-height: 28rem;
 }
+
+.text-error {
+  color: #ff1c1c;
+}
+
+.img-border {
+  max-width: 90%;
+  margin: 5% auto;
+  border: 1px solid whitesmoke;
+}

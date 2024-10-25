@@ -28,15 +28,8 @@ public class BrandController : Controller
     [HttpPost]
     public IActionResult Create(Brand brand)
     {
-        if (brand != null)
+        if (ModelState.IsValid)
         {
-            bool brandName = _context.Brands.Any(b => b.Name.ToLower() == brand.Name.ToLower());
-            if (brandName)
-            {
-                ModelState.AddModelError("Name", "Error: A brand with this name already exists!");
-                return View(brand);
-            }
-            
             _context.Add(brand);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -55,5 +48,11 @@ public class BrandController : Controller
         }
 
         return RedirectToAction("Index");
+    }
+    
+    public bool CheckName(string name)
+    {
+        var brand = _context.Brands.FirstOrDefault(b => b.Name.ToLower() == name.ToLower());
+        return brand == null;
     }
 }

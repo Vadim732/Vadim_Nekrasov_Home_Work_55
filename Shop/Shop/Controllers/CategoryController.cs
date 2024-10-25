@@ -28,15 +28,8 @@ public class CategoryController : Controller
     [HttpPost]
     public IActionResult Create(Category category)
     {
-        if (category != null)
+        if (ModelState.IsValid)
         {
-            bool categoryName = _context.Categories.Any(c => c.Name.ToLower() == category.Name.ToLower());
-            if (categoryName)
-            {
-                ModelState.AddModelError("Name", "Error: A category with this name already exists!");
-                return View(category);
-            }
-            
             _context.Add(category);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -55,5 +48,11 @@ public class CategoryController : Controller
         }
 
         return RedirectToAction("Index");
+    }
+    
+    public bool CheckName(string name)
+    {
+        var category = _context.Categories.FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+        return category == null;
     }
 }
