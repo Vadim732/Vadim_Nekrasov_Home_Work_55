@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ProductContext>(options => options.UseSqlite(connection));
+builder.Services.AddDbContext<ProductContext>(options => options.UseNpgsql(connection));
 
 var app = builder.Build();
 

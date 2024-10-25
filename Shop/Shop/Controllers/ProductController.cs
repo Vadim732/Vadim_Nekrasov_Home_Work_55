@@ -30,7 +30,7 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Create(Product product)
     {
-        product.DateCreation = DateTime.Now;
+        product.DateCreation = DateTime.UtcNow;
         product.DateUpdate = null;
         
         _context.Products.Add(product);
@@ -66,7 +66,7 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Edit(Product product)
     {
-        product.DateUpdate = DateTime.Now;
+        product.DateUpdate = DateTime.UtcNow;
         
         _context.Products.Update(product);
         _context.SaveChanges();
