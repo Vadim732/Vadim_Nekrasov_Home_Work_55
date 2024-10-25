@@ -7,16 +7,19 @@
 <div class="bg-dark text-center pt-5 pb-4">
     <h3 class="text-white mb-5">Fill out the form edit product</h3>
     <form asp-action="Edit" asp-controller="Product" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="Id"/>
         <div class="form_row mb-3">
             <label for="name" class="col-4">
                 <input type="text" class="form-control" asp-for="Name" placeholder="Specify product name...">
+                <span asp-validation-for="Name" class="text-error"/>
             </label>
         </div>
         <div class="form_row mb-3">
             <label for="category" class="col-4">
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
                     <option value="">Select a category...</option>
+                    <span asp-validation-for="CategoryId" class="text-error"/>
                 </select>
             </label>
         </div>
@@ -24,19 +27,26 @@
             <label for="brand" class="col-4">
                 <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
                     <option value="">Select a brand...</option>
+                    <span asp-validation-for="BrandId" class="text-error"/>
                 </select>
             </label>
         </div>
         <div class="form_row mb-3">
             <label for="image" class="col-4">
                 <input type="text" class="form-control" asp-for="Image" placeholder="Enter the image link...">
+                <span asp-validation-for="Image" class="text-error"/>
             </label>
         </div>
         <div class="form_row mb-3">
             <label for="price" class="col-4">
                 <input type="number" class="form-control" asp-for="Price" placeholder="Specify the product price...">
+                <span asp-validation-for="Price" class="text-error"/>
             </label>
         </div>
         <button type="submit" class="btn btn-outline-light mb-3 w-25">Save</button>
     </form>
 </div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

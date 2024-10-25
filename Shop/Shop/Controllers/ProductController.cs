@@ -30,13 +30,18 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Create(Product product)
     {
-        product.DateCreation = DateTime.UtcNow;
-        product.DateUpdate = null;
-        
-        _context.Products.Add(product);
-        _context.SaveChanges();
-                
-        return RedirectToAction("Index");
+        if (ModelState.IsValid)
+        {
+            product.DateCreation = DateTime.UtcNow;
+            product.DateUpdate = null;
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        return View(product);
     }
 
     public IActionResult Details(int productId)
@@ -66,12 +71,17 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Edit(Product product)
     {
-        product.DateUpdate = DateTime.UtcNow;
-        
-        _context.Products.Update(product);
-        _context.SaveChanges();
-                
-        return RedirectToAction("Index");
+        if (ModelState.IsValid)
+        {
+            product.DateUpdate = DateTime.UtcNow;
+
+            _context.Products.Update(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        return View(product);
     }
 
     public IActionResult Delete(int productId)
