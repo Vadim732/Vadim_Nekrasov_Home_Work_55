@@ -30,7 +30,7 @@ public class OrderController : Controller
     [HttpPost]
     public IActionResult Create(Order order)
     {
-        if (order != null)
+        if (ModelState.IsValid)
         {
             _context.Add(order);
             _context.SaveChanges();
@@ -38,7 +38,7 @@ public class OrderController : Controller
             return RedirectToAction("Index");
         }
 
-        return NotFound();
+        return View(order);
     }
     
     public IActionResult Delete(int orderId)
