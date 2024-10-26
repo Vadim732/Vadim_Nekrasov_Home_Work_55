@@ -1,55 +1,54 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 
-namespace Shop.Controllers;
-
-public class OrderController : Controller
+namespace Shop.Controllers
 {
-    private ProductContext _context;
+    public class OrderController : Controller
+    {
+        private readonly ProductContext _context;
 
-    public OrderController(ProductContext context)
-    {
-        _context = context;
-    }
-    
-    public IActionResult Index()
-    {
-        List<Order> orders = _context.Orders.Include(o => o.Product).ToList();
-        return View(orders);
-    }
-
-    public IActionResult Create(int productId)
-    {
-        Product product = _context.Products.FirstOrDefault(p => p.Id == productId);
-        return View(new Order() { Product = product });
-    }
-
-    [HttpPost]
-    public IActionResult Create(Order order)
-    {
-        if (ModelState.IsValid)
+        public OrderController(ProductContext context)
         {
-            _context.Add(order);
-            _context.SaveChanges();
+            _context = context;
+        }
+        
+        public async Task<IActionResult> Index()
+        {
+            List<Order> orders = await _context.Orders.Include(o => o.Product).ToListAsync();
+            return View(orders);
+        }
+
+        public async Task<IActionResult> Create(int productId)
+        {
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            return View(new Order() { Product = product });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(order);
+        }
+        
+        public async Task<IActionResult> Delete(int orderId)
+        {
+            Order order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order != null)
+            {
+                _context.Remove(order);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index");
         }
-
-        return View(order);
-    }
-    
-    public IActionResult Delete(int orderId)
-    {
-        Order order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
-        if (order != null)
-        {
-            _context.Remove(order);
-            _context.SaveChanges();
-        }
-
-        return RedirectToAction("Index");
     }
 }

@@ -1,58 +1,58 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 
-namespace Shop.Controllers;
-
-public class BrandController : Controller
+namespace Shop.Controllers
 {
-    private ProductContext _context;
+    public class BrandController : Controller
+    {
+        private readonly ProductContext _context;
 
-    public BrandController(ProductContext context)
-    {
-        _context = context;
-    }
-    
-    public IActionResult Index()
-    {
-        List<Brand> brands = _context.Brands.ToList();
-        return View(brands);
-    }
-    
-    public IActionResult Create()
-    {
-        return View();
-    }
-    
-    [HttpPost]
-    public IActionResult Create(Brand brand)
-    {
-        if (ModelState.IsValid)
+        public BrandController(ProductContext context)
         {
-            _context.Add(brand);
-            _context.SaveChanges();
+            _context = context;
+        }
+        
+        public async Task<IActionResult> Index()
+        {
+            List<Brand> brands = await _context.Brands.ToListAsync();
+            return View(brands);
+        }
+        
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Create(Brand brand)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(brand);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            
+            return View(brand);
+        }
+
+        public async Task<IActionResult> Delete(int brandId)
+        {
+            Brand brand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == brandId);
+            if (brand != null)
+            {
+                _context.Remove(brand);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("Index");
         }
         
-        return View(brand);
-    }
-
-    public IActionResult Delete(int brandId)
-    {
-        Brand brand = _context.Brands.FirstOrDefault(b => b.Id == brandId);
-        if (brand != null)
+        public async Task<bool> CheckName(string name)
         {
-            _context.Remove(brand);
-            _context.SaveChanges();
+            var brand = await _context.Brands.FirstOrDefaultAsync(b => b.Name.ToLower() == name.ToLower());
+            return brand == null;
         }
-
-        return RedirectToAction("Index");
-    }
-    
-    public bool CheckName(string name)
-    {
-        var brand = _context.Brands.FirstOrDefault(b => b.Name.ToLower() == name.ToLower());
-        return brand == null;
     }
 }

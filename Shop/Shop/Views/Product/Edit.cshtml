@@ -18,7 +18,6 @@
         <div class="form_row mb-3">
             <label for="category" class="col-4">
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
-                    <option value="">Select a category...</option>
                     <span asp-validation-for="CategoryId" class="text-error"/>
                 </select>
             </label>
@@ -26,7 +25,6 @@
         <div class="form_row mb-3">
             <label for="brand" class="col-4">
                 <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
-                    <option value="">Select a brand...</option>
                     <span asp-validation-for="BrandId" class="text-error"/>
                 </select>
             </label>
