@@ -35,3 +35,11 @@ body {
   margin: 5% auto;
   border: 1px solid whitesmoke;
 }
+
+.sort-stick {
+  margin-top: 0.6em;
+  margin-bottom: 0.8em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  border-radius: 0.5em;
+}

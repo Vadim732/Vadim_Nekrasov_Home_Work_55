@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
+using Shop.Services;
 
 namespace Shop.Controllers
 {
@@ -14,10 +15,49 @@ namespace Shop.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(SortProductState sortProductState = SortProductState.NameAsc)
         {
-            List<Product> products = await _context.Products.ToListAsync();
-            return View(products);
+            IEnumerable<Product> products = await _context.Products.Include(p => p.Brand).Include(p => p.Category).ToListAsync();
+            ViewBag.NameSort = sortProductState == SortProductState.NameAsc ? SortProductState.NameDesc : SortProductState.NameAsc;
+            ViewBag.DateCreationSort = sortProductState == SortProductState.DateCreationAsc ? SortProductState.DateCreationDesc : SortProductState.DateCreationAsc;
+            ViewBag.CategorySort = sortProductState == SortProductState.CategoryAsc ? SortProductState.CategoryDesc : SortProductState.CategoryAsc;
+            ViewBag.BrandSort = sortProductState == SortProductState.BrandAsc ? SortProductState.BrandDesc : SortProductState.BrandAsc;
+            ViewBag.PriceSort = sortProductState == SortProductState.PriceAsc ? SortProductState.PriceDesc : SortProductState.PriceAsc;
+            switch (sortProductState)
+            {
+                case SortProductState.NameAsc:
+                    products = products.OrderBy(p => p.Name);
+                    break;
+                case SortProductState.NameDesc:
+                    products = products.OrderByDescending(p => p.Name);
+                    break;
+                case SortProductState.DateCreationAsc:
+                    products = products.OrderBy(p => p.DateCreation);
+                    break;
+                case SortProductState.DateCreationDesc:
+                    products = products.OrderByDescending(p => p.DateCreation);
+                    break;
+                case SortProductState.CategoryAsc:
+                    products = products.OrderBy(p => p.Category.Name);
+                    break;
+                case SortProductState.CategoryDesc:
+                    products = products.OrderByDescending(p => p.Category.Name);
+                    break;
+                case SortProductState.BrandAsc:
+                    products = products.OrderBy(p => p.Brand.Name);
+                    break;
+                case SortProductState.BrandDesc:
+                    products = products.OrderByDescending(p => p.Brand.Name);
+                    break;
+                case SortProductState.PriceAsc:
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case SortProductState.PriceDesc:
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+            }
+            
+            return View(products.ToList());
         }
 
         public async Task<IActionResult> Create()

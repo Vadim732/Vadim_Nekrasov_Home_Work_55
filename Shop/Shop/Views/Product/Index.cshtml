@@ -4,6 +4,14 @@
     ViewBag.Title = "List products";
 }
 
+<div class="bg-dark sort-stick d-flex justify-content-around">
+    <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.NameSort" class="btn btn-light">Product name</a>
+    <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.DateCreationSort" class="btn btn-light">Date added</a>
+    <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.CategorySort" class="btn btn-light">Category</a>
+    <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.BrandSort" class="btn btn-light">Brand</a>
+    <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.PriceSort" class="btn btn-light">Price</a>
+</div>
+
 @if (Model != null && Model.Count != 0)
 {
     <div class="row">
