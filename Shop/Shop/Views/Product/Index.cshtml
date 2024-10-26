@@ -1,21 +1,29 @@
-﻿@model List<Product>
+﻿@model Shop.ViewModels.ProductIndexViewModel
 
 @{
     ViewBag.Title = "List products";
 }
 
 <div class="bg-dark sort-stick d-flex justify-content-around">
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="btn btn-primary">Back</a>
+    }
     <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.NameSort" class="btn btn-light">Product name</a>
     <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.DateCreationSort" class="btn btn-light">Date added</a>
     <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.CategorySort" class="btn btn-light">Category</a>
     <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.BrandSort" class="btn btn-light">Brand</a>
     <a asp-action="Index" asp-controller="Product" asp-route-sortProductState="@ViewBag.PriceSort" class="btn btn-light">Price</a>
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="btn btn-primary">Next</a>
+    }
 </div>
 
-@if (Model != null && Model.Count != 0)
+@if (Model != null && Model.Products != null && Model.Products.Count > 0)
 {
     <div class="row">
-        @foreach (var p in Model)
+        @foreach (var p in Model.Products)
         {
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card bg-dark text-white mt-2 card-size">
@@ -39,3 +47,14 @@ else
     <h4 class="text-center">Unfortunately, there are currently no product for sale :c</h4>
     <p class="text-center mt-2"><a asp-action="Create" asp-controller="Product" class="btn btn-dark">Add new product</a></p>
 }
+
+<div>
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="btn btn-light">Back</a>
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="btn btn-light">Next</a>
+    }
+</div>

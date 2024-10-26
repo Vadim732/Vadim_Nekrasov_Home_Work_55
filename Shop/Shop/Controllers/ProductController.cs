@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 using Shop.Services;
+using Shop.ViewModels;
 
 namespace Shop.Controllers
 {
@@ -15,7 +16,7 @@ namespace Shop.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(SortProductState sortProductState = SortProductState.NameAsc)
+        public async Task<IActionResult> Index(SortProductState sortProductState = SortProductState.NameAsc, int page =1)
         {
             IEnumerable<Product> products = await _context.Products.Include(p => p.Brand).Include(p => p.Category).ToListAsync();
             ViewBag.NameSort = sortProductState == SortProductState.NameAsc ? SortProductState.NameDesc : SortProductState.NameAsc;
@@ -56,8 +57,20 @@ namespace Shop.Controllers
                     products = products.OrderByDescending(p => p.Price);
                     break;
             }
+
+            int pageSize = 3;
+            int count = products.Count();
+            var items = products.Skip((page - 1) * pageSize).Take(pageSize);
+
+            PageViewModel pvm = new PageViewModel(products.Count(), page, pageSize);
+
+            var pivm = new ProductIndexViewModel()
+            {
+                Products = items.ToList(),
+                PageViewModel = pvm
+            };
             
-            return View(products.ToList());
+            return View(pivm);
         }
 
         public async Task<IActionResult> Create()
