@@ -47,14 +47,3 @@ else
     <h4 class="text-center">Unfortunately, there are currently no product for sale :c</h4>
     <p class="text-center mt-2"><a asp-action="Create" asp-controller="Product" class="btn btn-dark">Add new product</a></p>
 }
-
-<div>
-    @if (Model.PageViewModel.HasPreviousPage)
-    {
-        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="btn btn-light">Back</a>
-    }
-    @if (Model.PageViewModel.HasNextPage)
-    {
-        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="btn btn-light">Next</a>
-    }
-</div>
